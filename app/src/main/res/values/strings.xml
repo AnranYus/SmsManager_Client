@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Client</string>
+    <string name="send">发送</string>
+    <string name="client">客户端</string>
+    <string name="console">控制端</string>
+    <string name="switchInfo">请选择该设备的类型</string>
+    <string name="hostTip">服务器地址</string>
+    <string name="portTip">端口号</string>
+</resources>
