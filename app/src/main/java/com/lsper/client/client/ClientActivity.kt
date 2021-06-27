@@ -23,7 +23,6 @@ import kotlin.concurrent.thread
 class ClientActivity : AppCompatActivity() {
 
 
-    lateinit var sendSmsReceiver:SendSmsReceiver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client)
@@ -49,8 +48,6 @@ class ClientActivity : AppCompatActivity() {
         content.origin = "client"
         content.type = "connection"
 
-
-
         val json = Gson().toJson(content)
 
         //运行客户端
@@ -59,35 +56,9 @@ class ClientActivity : AppCompatActivity() {
         }
 
 
-        val intentFilter = IntentFilter()
-        intentFilter.addAction("com.smsManager.broadcast.SEND_SMS")
-        sendSmsReceiver = SendSmsReceiver()
-        registerReceiver(sendSmsReceiver,intentFilter)
 
 
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(sendSmsReceiver)
-    }
-
-    inner class SendSmsReceiver: BroadcastReceiver(){
-        override fun onReceive(context: Context?, intent: Intent?) {
-            val smsManager = SmsManager.getDefault()
-            val smsJson = intent?.getStringExtra("sms")
-            val gson = Gson()
-            val sms = gson.fromJson(smsJson,Sms::class.java)
-            if (sms.phoneNumber!=null){
-                if (sms.lateTime!=null){
-                    Thread.sleep(sms.lateTime)
-                    smsManager.sendTextMessage(sms.phoneNumber,null,sms.smsContent,null,null)
-                }else{
-                    smsManager.sendTextMessage(sms.phoneNumber,null,sms.smsContent,null,null)
-                }
-            }
-        }
-
-    }
 }

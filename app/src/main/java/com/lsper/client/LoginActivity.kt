@@ -84,7 +84,6 @@ class LoginActivity : AppCompatActivity() {
                 //启动客户端
                 clientConnection("192.168.0.103","8899",this)
 
-
                 //连接成功
                 val sp = getSharedPreferences("model", MODE_PRIVATE)
                 val model = sp.getString("model",null)

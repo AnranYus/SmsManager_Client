@@ -52,7 +52,6 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
             Log.e("Conn","连接成功");
         }
         if (content.getOrigin().equals("console")|| content.getOrigin().equals("server")){
-            Log.e("sms","getMSG");
             client(content);
         }
         if (content.getOrigin().equals("client") || content.getOrigin().equals("server")){
@@ -78,8 +77,8 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
             Intent intent = new Intent();
             intent.setAction("com.smsManager.broadcast.SEND_SMS");
             intent.putExtra("sms",content.getContent());
+            intent.setPackage(context.getPackageName());
             context.sendBroadcast(intent, Manifest.permission.SEND_SMS);
-            Log.e("sms","sendRe");
 
 
 
