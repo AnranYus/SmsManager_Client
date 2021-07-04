@@ -4,6 +4,15 @@ public class Sms {
     Long lateTime;
     String phoneNumber;
     String smsContent;
+    String person;
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
 
     public Long getLateTime() {
         return lateTime;
