@@ -1,4 +1,4 @@
-package com.lsper.client.console
+package com.lsper.client.activity.console
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +9,6 @@ import com.lsper.client.R
 import com.lsper.client.bean.Content
 import com.lsper.client.bean.Sms
 import com.lsper.client.socketClient
-import com.lsper.client.websocket.SocketClient
 import kotlin.concurrent.thread
 
 class ConsoleActivity : AppCompatActivity() {

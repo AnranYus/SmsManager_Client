@@ -1,13 +1,10 @@
-package com.lsper.client.client
+package com.lsper.client.activity.client
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
-import android.telephony.SmsManager
+import android.os.Handler
 import android.util.Log
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,20 +12,21 @@ import com.google.gson.Gson
 import com.lsper.client.QRCodeUtil
 import com.lsper.client.R
 import com.lsper.client.bean.Content
-import com.lsper.client.bean.Sms
+import com.lsper.client.observer.SmsObserver
+import com.lsper.client.service.GetSMSService
 import com.lsper.client.socketClient
 import com.lsper.client.websocket.SocketClient
 import kotlin.concurrent.thread
 
 class ClientActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client)
         val socket = socketClient as SocketClient
 
-
+        val intent = Intent(this,GetSMSService::class.java)
+        startService(intent)
         //使用UUID作为唯一标识符
         val sp = getSharedPreferences("UUID", MODE_PRIVATE)
         val uuid = sp.getString("localUUID",null)
@@ -37,7 +35,7 @@ class ClientActivity : AppCompatActivity() {
         text.text = uuid
 
         val QRCode = findViewById<ImageView>(R.id.QRCode)
-        val mBitmap = QRCodeUtil.createQRCodeBitmap(uuid,880,880)
+        val mBitmap = QRCodeUtil.createQRCodeBitmap("link-client:$uuid",880,880)
         QRCode.setImageBitmap(mBitmap)
 
         //生成Json
@@ -56,9 +54,8 @@ class ClientActivity : AppCompatActivity() {
         }
 
 
-
-
-
     }
+
+
 
 }

@@ -1,7 +1,6 @@
 package com.lsper.client
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +10,8 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.lsper.client.client.ClientActivity
-import com.lsper.client.console.BindActivity
+import com.lsper.client.activity.client.ClientActivity
+import com.lsper.client.activity.console.BindActivity
 
 class SwitchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

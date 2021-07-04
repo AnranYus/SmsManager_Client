@@ -11,9 +11,13 @@ lateinit var socketClient: SocketClient
 lateinit var toast: Toast
 
 fun clientConnection(host:String,port:String,context:Context): SocketClient {
-    socketClient = SocketClient(
-        URI("ws://$host:$port"),context
-    )
+    try {
+        socketClient = SocketClient(
+            URI("ws://$host:$port"), context
+        )
+    }catch (e:Exception){
+        Toast.makeText(context,e.stackTraceToString(),Toast.LENGTH_SHORT).show()
+    }
     socketClient.connect()
     var i:Int = 0
 

@@ -1,4 +1,4 @@
-package com.lsper.client
+package com.lsper.client.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context

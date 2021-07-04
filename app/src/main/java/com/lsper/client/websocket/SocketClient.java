@@ -2,10 +2,13 @@ package com.lsper.client.websocket;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
+import android.os.IBinder;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +31,9 @@ import kotlin.Unit;
 import kotlin.time.DurationUnitKt;
 
 public class SocketClient extends org.java_websocket.client.WebSocketClient {
+
+
+
     Context context;
     public SocketClient(URI serverUri,Context context) {
         super(serverUri);
@@ -43,10 +49,8 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
     @Override
     public void onMessage(String message) {
         Gson gson = new Gson();
-
         Content content = gson.fromJson(message,Content.class);
         Log.e("msg",message);
-
         //服务器返回200 连接成功
         if (content.getType().equals("200")){
             Log.e("Conn","连接成功");
@@ -79,10 +83,6 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
             intent.putExtra("sms",content.getContent());
             intent.setPackage(context.getPackageName());
             context.sendBroadcast(intent, Manifest.permission.SEND_SMS);
-
-
-
-
 
         }
 
