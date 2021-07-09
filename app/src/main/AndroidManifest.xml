@@ -23,23 +23,15 @@
         <service
             android:name=".service.GetSMSService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+            android:permission="android.permission.READ_SMS" >
+        </service>
         <service
             android:name=".service.SendSMSService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"></service>
 
-        <receiver
-            android:name=".receiver.GetSMSReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BROADCAST_SMS">
-            <intent-filter android:priority="1000">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-                <action android:name="android.provider.Telephony.SMS_DELIVER" />
-            </intent-filter>
-        </receiver>
         <receiver
             android:name=".receiver.SendSMSReceiver"
             android:enabled="true"
@@ -65,7 +57,8 @@
         <activity
             android:name=".SwitchActivity"
             android:noHistory="true" />
-        <activity android:name=".activity.client.ClientActivity" />
+        <activity android:name=".activity.client.ClientActivity">
+        </activity>
     </application>
 
 </manifest>

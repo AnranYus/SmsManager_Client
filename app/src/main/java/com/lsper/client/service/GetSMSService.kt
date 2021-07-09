@@ -32,7 +32,7 @@ class GetSMSService : Service() {
         //因为，某些机型修改rom导致没有getContentResolver
         try {
             mSmsDBChangeObserver =
-                SmsObserver(contextWrapper.contentResolver, Handler())
+                SmsObserver(this.contentResolver, Handler(),this)
             mSmsDBChangeObserver?.let {
                 contextWrapper.contentResolver.registerContentObserver(
                     SMS_MESSAGE_URI,

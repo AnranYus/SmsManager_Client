@@ -1,5 +1,6 @@
 package com.lsper.client.observer;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,8 +25,11 @@ import java.util.Observable;
 import kotlin.Unit;
 import kotlin.time.DurationUnitKt;
 
+import static androidx.core.content.ContextCompat.checkSelfPermission;
+
 public class SmsObserver extends ContentObserver {
         // 只检查收件箱
+        final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
         public static final Uri MMSSMS_ALL_MESSAGE_URI = Uri.parse("content://sms/inbox");
         public static final String SORT_FIELD_STRING = "_id asc";  // 排序
         public static final String DB_FIELD_ID = "_id";
@@ -41,12 +45,14 @@ public class SmsObserver extends ContentObserver {
         public static int mMessageCount = -1;
 
         private static final long DELTA_TIME = 60 * 1000;
-        private ContentResolver mResolver;
-        private Context context;
-        public SmsObserver(Context context, Handler handler) {
+        private final ContentResolver mResolver;
+        private final Context context;
+        public SmsObserver(ContentResolver mResolver, Handler handler,Context context) {
             super(handler);
+            this.mResolver = mResolver;
             this.context = context;
-            mResolver = context.getContentResolver();
+
+
         }
 
         @Override
@@ -54,9 +60,14 @@ public class SmsObserver extends ContentObserver {
             onReceiveSms();
         }
         private void onReceiveSms() {
+
+
+
+
             Cursor cursor = null;
             // 添加异常捕捉
             try {
+
                 cursor = mResolver.query(MMSSMS_ALL_MESSAGE_URI, ALL_DB_FIELD_NAME,
                         null, null, SORT_FIELD_STRING);
                 final int count = cursor.getCount();
@@ -84,6 +95,7 @@ public class SmsObserver extends ContentObserver {
                         return;
                     }
                     // 得到短信号码和内容之后进行相关处理
+                    Log.e("sms","push");
                     Sms sms = new Sms();
                     if (person!=null){
                         sms.setPerson(person);
@@ -96,7 +108,7 @@ public class SmsObserver extends ContentObserver {
                     SharedPreferences sp = context.getSharedPreferences("UUID",Context.MODE_PRIVATE);
                     String recipientUUID =  sp.getString("consoleUUID",null);
                     String localUUID = sp.getString("localUUID",null);
-                    if (recipientUUID!=null&&localUUID!=null){
+                    if ((!recipientUUID.equals("")) && (!localUUID.equals(""))){
                         Content content = new Content();
                         content.setOrigin("client");
                         content.setRecipientUUID(recipientUUID);

@@ -15,7 +15,6 @@ class ConsoleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_console)
-        val socket = socketClient
 
 
         val phoneNumber = findViewById<EditText>(R.id.phoneNumber)
@@ -38,7 +37,7 @@ class ConsoleActivity : AppCompatActivity() {
             val content = Content(sContent,"sendSMS",localUUID,bindUUID,"console")
             val json = Gson().toJson(content)
             thread {
-                socket.send(json)
+                socketClient.send(json)
             }
 
         }

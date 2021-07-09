@@ -23,7 +23,6 @@ class ClientActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client)
-        val socket = socketClient as SocketClient
 
         val intent = Intent(this,GetSMSService::class.java)
         startService(intent)
@@ -50,7 +49,7 @@ class ClientActivity : AppCompatActivity() {
 
         //运行客户端
         thread {
-            socket.send(json)
+            socketClient.send(json)
         }
 
 

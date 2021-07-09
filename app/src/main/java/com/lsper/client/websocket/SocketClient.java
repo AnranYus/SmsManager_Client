@@ -13,6 +13,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lsper.client.ClientObjectKt;
@@ -48,6 +49,7 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
 
     @Override
     public void onMessage(String message) {
+        Log.e("message",message);
         Gson gson = new Gson();
         Content content = gson.fromJson(message,Content.class);
         Log.e("msg",message);
@@ -65,15 +67,17 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
 
 
 
+
     }
 
     private void client(Content content){
+        System.out.println(content.getType());
         //服务器发送bind请求 将控制端UUID写入本地
         if (content.getType().equals("bindConsole")){
+            Log.e("bind","isbind");
             SharedPreferences.Editor spe = context.getSharedPreferences("UUID",Context.MODE_PRIVATE).edit();
             spe.putString("consoleUUID",content.getSenderUUID());
             spe.apply();
-
         }
 
         if (content.getType().equals("sendSMS")){
@@ -94,10 +98,24 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
             ClientObjectKt.toast.setText(content.getContent());
             ClientObjectKt.toast.show();
         }
+        if (content.getType().equals("getSMS")){
+            Sms sms =new Gson().fromJson(content.getContent(),Sms.class);
+            Log.e("sms",sms.getSmsContent());
+            ClientObjectKt.toast.setText(sms.getSmsContent());
+            ClientObjectKt.toast.show();
+
+        }
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
+        SharedPreferences spe = context.getSharedPreferences("UUID",Context.MODE_PRIVATE);
+        String UUID = spe.getString("localUUID",null);
+        String model = context.getSharedPreferences("model",Context.MODE_PRIVATE).getString("model",null);
+        if (UUID!=null && model!=null) {
+            Content content = new Content("isClose", "close", UUID, model);
+            send(new Gson().toJson(content));
+        }
 
     }
 

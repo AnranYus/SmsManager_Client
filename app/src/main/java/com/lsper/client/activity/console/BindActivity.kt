@@ -16,6 +16,7 @@ import kotlin.concurrent.thread
 
 
 class BindActivity : AppCompatActivity() {
+    //控制端发起绑定
 
     val REQUEST_QR_CODE = 1
     val TAG = "UUID"
@@ -59,7 +60,7 @@ class BindActivity : AppCompatActivity() {
         }
     }
     fun start(UUID:String){
-        val socket = socketClient
+
         val sp = getSharedPreferences("UUID", MODE_PRIVATE)
         //将客户端的UUID写入本地
         val spe = sp.edit()
@@ -77,7 +78,8 @@ class BindActivity : AppCompatActivity() {
             content.type = "connection"
             content.origin = "console"
             val json = gson.toJson(content)
-            socket.send(json)
+            socketClient.send(json)
+            Toast.makeText(this,"绑定",Toast.LENGTH_SHORT).show()
         }
 
 

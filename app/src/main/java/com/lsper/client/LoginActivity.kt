@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
             //没有权限，向用户请求权限
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(Manifest.permission.SEND_SMS),
+                arrayOf(Manifest.permission.SEND_SMS,Manifest.permission.READ_SMS),
                 1
             )
         }

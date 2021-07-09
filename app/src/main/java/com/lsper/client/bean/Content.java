@@ -27,6 +27,13 @@ public class Content {
     public Content() {
     }
 
+    /**
+     *
+     * @param content 信息内容
+     * @param type 信息类型
+     * @param senderUUID 发送端UUIID
+     * @param origin 客户端类型
+     */
     public Content(String content, String type, String senderUUID, String origin) {
         Content = content;
         Type = type;
@@ -34,6 +41,14 @@ public class Content {
         Origin = origin;
     }
 
+    /**
+     *
+     * @param content 信息内容
+     * @param type 信息类型
+     * @param senderUUID 发送端UUID
+     * @param recipientUUID 接收端UUID
+     * @param origin 客户端类型
+     */
     public Content(String content, String type, String senderUUID, String recipientUUID, String origin) {
         Content = content;
         Type = type;
