@@ -12,15 +12,26 @@ import com.lsper.client.socketClient
 import kotlin.concurrent.thread
 
 class ConsoleActivity : AppCompatActivity() {
+    var localUUID: String? = null
+    var bindUUID:String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_console)
-
+        val sp = getSharedPreferences("UUID", MODE_PRIVATE)
+        localUUID = sp.getString("localUUID",null)
+        bindUUID = sp.getString("BindUUID",null)
 
         val phoneNumber = findViewById<EditText>(R.id.phoneNumber)
         val time = findViewById<EditText>(R.id.lateTime)
         val smsContent = findViewById<EditText>(R.id.smsContent)
         val send = findViewById<Button>(R.id.send)
+
+        val bindedsp = getSharedPreferences("bind", MODE_PRIVATE);
+        //连接通信
+        if (bindedsp.getBoolean("binded",false)){
+            connInformation()
+        }
 
         send.setOnClickListener {
             val sms = Sms()
@@ -31,9 +42,6 @@ class ConsoleActivity : AppCompatActivity() {
             sms.smsContent = smsContent.text.toString()
 
             val sContent = Gson().toJson(sms)
-            val sp = getSharedPreferences("UUID", MODE_PRIVATE)
-            val localUUID = sp.getString("localUUID",null)
-            val bindUUID = sp.getString("BindUUID",null)
             val content = Content(sContent,"sendSMS",localUUID,bindUUID,"console")
             val json = Gson().toJson(content)
             thread {
@@ -42,5 +50,17 @@ class ConsoleActivity : AppCompatActivity() {
 
         }
 
+    }
+    private fun connInformation(){
+        //读取绑定的UUID
+        val content = Content()
+
+        //发送连接信息
+        content.senderUUID = localUUID
+        content.recipientUUID = bindUUID
+        content.type = "connection"
+        content.origin = "console"
+        val json = Gson().toJson(content)
+        socketClient.send(json)
     }
 }

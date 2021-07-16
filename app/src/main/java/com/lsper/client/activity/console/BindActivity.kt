@@ -79,7 +79,9 @@ class BindActivity : AppCompatActivity() {
             content.origin = "console"
             val json = gson.toJson(content)
             socketClient.send(json)
-            Toast.makeText(this,"绑定",Toast.LENGTH_SHORT).show()
+            val spe = getSharedPreferences("bind", MODE_PRIVATE).edit()
+            spe.putBoolean("binded",true)
+            spe.apply()
         }
 
 

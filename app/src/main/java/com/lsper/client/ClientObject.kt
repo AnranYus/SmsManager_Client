@@ -16,7 +16,7 @@ fun clientConnection(host:String,port:String,context:Context): SocketClient {
             URI("ws://$host:$port"), context
         )
     }catch (e:Exception){
-        Toast.makeText(context,e.stackTraceToString(),Toast.LENGTH_SHORT).show()
+        Log.e("socket",e.toString())
     }
     socketClient.connect()
     var i:Int = 0

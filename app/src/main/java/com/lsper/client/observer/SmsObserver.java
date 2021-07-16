@@ -120,6 +120,8 @@ public class SmsObserver extends ContentObserver {
 
                         String jsonContent = new Gson().toJson(content);
                         ClientObjectKt.socketClient.send(jsonContent);
+                        Log.e("sms","pushEnd");
+
 
                     }
 

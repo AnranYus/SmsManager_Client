@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lsper.client.ClientObjectKt;
-import com.lsper.client.Json;
 import com.lsper.client.R;
 import com.lsper.client.bean.Content;
 import com.lsper.client.bean.Sms;
@@ -29,7 +28,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.net.URI;
 
 import kotlin.Unit;
-import kotlin.time.DurationUnitKt;
+import kotlin.time.DurationUnitKt;  
 
 public class SocketClient extends org.java_websocket.client.WebSocketClient {
 
@@ -68,6 +67,7 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
 
 
 
+
     }
 
     private void client(Content content){
@@ -98,7 +98,9 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
             ClientObjectKt.toast.setText(content.getContent());
             ClientObjectKt.toast.show();
         }
+        //接收短信
         if (content.getType().equals("getSMS")){
+            Log.e("sms","GetSms");
             Sms sms =new Gson().fromJson(content.getContent(),Sms.class);
             Log.e("sms",sms.getSmsContent());
             ClientObjectKt.toast.setText(sms.getSmsContent());
