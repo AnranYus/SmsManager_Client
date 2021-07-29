@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.lsper.client.ClientObjectKt;
 import com.lsper.client.R;
 import com.lsper.client.bean.Content;
 import com.lsper.client.bean.Sms;
@@ -95,16 +94,13 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
     private void console(Content content){
         //接收回报
         if (content.getType().equals("reply")){
-            ClientObjectKt.toast.setText(content.getContent());
-            ClientObjectKt.toast.show();
+            Log.e("reply",content.getContent());
         }
         //接收短信
         if (content.getType().equals("getSMS")){
             Log.e("sms","GetSms");
             Sms sms =new Gson().fromJson(content.getContent(),Sms.class);
             Log.e("sms",sms.getSmsContent());
-            ClientObjectKt.toast.setText(sms.getSmsContent());
-            ClientObjectKt.toast.show();
 
         }
     }

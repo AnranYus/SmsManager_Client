@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import com.lsper.client.MyApplication
 import com.lsper.client.observer.SmsObserver
 
 
@@ -32,7 +33,7 @@ class GetSMSService : Service() {
 
         try {
             mSmsDBChangeObserver =
-                SmsObserver(this.contentResolver, Handler(),this)
+                SmsObserver(this.contentResolver, Handler(),application as MyApplication)
             mSmsDBChangeObserver?.let {
                 contextWrapper.contentResolver.registerContentObserver(
                     SMS_MESSAGE_URI,

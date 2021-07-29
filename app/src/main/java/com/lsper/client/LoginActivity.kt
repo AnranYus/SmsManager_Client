@@ -26,7 +26,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        toast = Toast.makeText(this,"",Toast.LENGTH_SHORT)
         //读取或生成控制端UUID
         val spUUID = getSharedPreferences("UUID", MODE_PRIVATE)
         var uuid = spUUID.getString("localUUID",null)
@@ -62,7 +61,8 @@ class LoginActivity : AppCompatActivity() {
                 thread {
                     //启动客户端
 
-                    clientConnection(host, port, this)
+                    val app = (applicationContext as MyApplication).getInstance()
+                    app.clientConnection(host, port)
 
                     //连接成功
                     val sp = getSharedPreferences("model", MODE_PRIVATE)

@@ -8,9 +8,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
+import com.lsper.client.MyApplication
 import com.lsper.client.R
 import com.lsper.client.bean.Content
-import com.lsper.client.socketClient
 import io.github.xudaojie.qrcodelib.CaptureActivity
 import kotlin.concurrent.thread
 
@@ -78,7 +78,7 @@ class BindActivity : AppCompatActivity() {
             content.type = "connection"
             content.origin = "console"
             val json = gson.toJson(content)
-            socketClient.send(json)
+            (applicationContext as MyApplication).getInstance().socketClient.send(json)
             val spe = getSharedPreferences("bind", MODE_PRIVATE).edit()
             spe.putBoolean("binded",true)
             spe.apply()

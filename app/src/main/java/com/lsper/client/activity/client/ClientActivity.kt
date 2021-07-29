@@ -9,12 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
+import com.lsper.client.MyApplication
 import com.lsper.client.QRCodeUtil
 import com.lsper.client.R
 import com.lsper.client.bean.Content
 import com.lsper.client.observer.SmsObserver
 import com.lsper.client.service.GetSMSService
-import com.lsper.client.socketClient
 import com.lsper.client.websocket.SocketClient
 import kotlin.concurrent.thread
 
@@ -49,7 +49,7 @@ class ClientActivity : AppCompatActivity() {
 
         //运行客户端
         thread {
-            socketClient.send(json)
+            (applicationContext as MyApplication).getInstance().socketClient.send(json)
         }
 
 

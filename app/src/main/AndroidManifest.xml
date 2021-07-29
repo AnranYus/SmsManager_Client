@@ -13,7 +13,7 @@
     <uses-permission android:name="android.provider.Telephony.SMS_RECEIVED" />
 
     <application
-
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,11 +22,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Client">
         <service
+            android:name=".service.SocketBeatService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
             android:name=".service.GetSMSService"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.READ_SMS" >
-        </service>
+            android:permission="android.permission.READ_SMS"></service>
+
         <receiver
             android:name=".receiver.SendSMSReceiver"
             android:enabled="true"
@@ -39,20 +43,19 @@
 
         <activity android:name="io.github.xudaojie.qrcodelib.CaptureActivity" />
         <activity
-            android:exported="true"
             android:name=".LoginActivity"
+            android:exported="true"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activity.console.ConsoleActivity" />
         <activity android:name=".activity.console.BindActivity" />
-        <activity
-            android:name=".SwitchActivity" />
-        <activity android:name=".activity.client.ClientActivity">
-        </activity>
+        <activity android:name=".SwitchActivity" />
+        <activity android:name=".activity.client.ClientActivity"></activity>
     </application>
 
 </manifest>

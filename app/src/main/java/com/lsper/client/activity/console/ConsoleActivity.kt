@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import com.google.gson.Gson
+import com.lsper.client.MyApplication
 import com.lsper.client.R
 import com.lsper.client.bean.Content
 import com.lsper.client.bean.Sms
-import com.lsper.client.socketClient
 import kotlin.concurrent.thread
 
 class ConsoleActivity : AppCompatActivity() {
@@ -45,7 +45,7 @@ class ConsoleActivity : AppCompatActivity() {
             val content = Content(sContent,"sendSMS",localUUID,bindUUID,"console")
             val json = Gson().toJson(content)
             thread {
-                socketClient.send(json)
+                (application as MyApplication).getInstance().socketClient.send(json)
             }
 
         }
@@ -61,6 +61,6 @@ class ConsoleActivity : AppCompatActivity() {
         content.type = "connection"
         content.origin = "console"
         val json = Gson().toJson(content)
-        socketClient.send(json)
+        (application as MyApplication).getInstance().socketClient.send(json)
     }
 }

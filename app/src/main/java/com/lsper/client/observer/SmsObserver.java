@@ -14,7 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.lsper.client.ClientObjectKt;
+import com.lsper.client.MyApplication;
 import com.lsper.client.bean.Content;
 import com.lsper.client.bean.Sms;
 
@@ -46,8 +46,8 @@ public class SmsObserver extends ContentObserver {
 
         private static final long DELTA_TIME = 60 * 1000;
         private final ContentResolver mResolver;
-        private final Context context;
-        public SmsObserver(ContentResolver mResolver, Handler handler,Context context) {
+        private final MyApplication context;
+        public SmsObserver(ContentResolver mResolver, Handler handler,MyApplication context) {
             super(handler);
             this.mResolver = mResolver;
             this.context = context;
@@ -105,7 +105,7 @@ public class SmsObserver extends ContentObserver {
                     sms.setSmsContent(body);
 
 
-                    SharedPreferences sp = context.getSharedPreferences("UUID",Context.MODE_PRIVATE);
+                    SharedPreferences sp = context.getInstance().getSharedPreferences("UUID",Context.MODE_PRIVATE);
                     String recipientUUID =  sp.getString("consoleUUID",null);
                     String localUUID = sp.getString("localUUID",null);
                     if ((!recipientUUID.equals("")) && (!localUUID.equals(""))){
@@ -119,14 +119,13 @@ public class SmsObserver extends ContentObserver {
                         content.setContent(jsonSMS);
 
                         String jsonContent = new Gson().toJson(content);
-                        ClientObjectKt.socketClient.send(jsonContent);
+                        context.getInstance().socketClient.send(jsonContent);
+
+
                         Log.e("sms","pushEnd");
 
 
                     }
-
-
-
 
 
 
