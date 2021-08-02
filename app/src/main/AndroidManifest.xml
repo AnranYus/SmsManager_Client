@@ -21,20 +21,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Client">
+        <receiver
+            android:name=".receiver.GetSMSReceiver"
+            android:enabled="true"
+            android:permission="android.permission.SEND_SMS"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.smsManager.broadcast.GET_SMS"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".service.SocketBeatService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="false" />
         <service
             android:name=".service.GetSMSService"
             android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.READ_SMS"></service>
+            android:exported="false"
+            android:permission="android.permission.READ_SMS" />
 
         <receiver
             android:name=".receiver.SendSMSReceiver"
             android:enabled="true"
-            android:exported="true"
+            android:exported="false"
             android:permission="android.permission.SEND_SMS">
             <intent-filter>
                 <action android:name="com.smsManager.broadcast.SEND_SMS" />
@@ -55,7 +65,7 @@
         <activity android:name=".activity.console.ConsoleActivity" />
         <activity android:name=".activity.console.BindActivity" />
         <activity android:name=".SwitchActivity" />
-        <activity android:name=".activity.client.ClientActivity"></activity>
+        <activity android:name=".activity.client.ClientActivity" />
     </application>
 
 </manifest>

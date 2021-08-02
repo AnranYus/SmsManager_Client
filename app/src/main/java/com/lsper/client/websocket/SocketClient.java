@@ -98,9 +98,11 @@ public class SocketClient extends org.java_websocket.client.WebSocketClient {
         }
         //接收短信
         if (content.getType().equals("getSMS")){
-            Log.e("sms","GetSms");
-            Sms sms =new Gson().fromJson(content.getContent(),Sms.class);
-            Log.e("sms",sms.getSmsContent());
+            Intent intent = new Intent();
+            intent.setAction("com.smsManager.broadcast.GET_SMS");
+            intent.putExtra("sms",content.getContent());
+            intent.setPackage(context.getPackageName());
+            context.sendBroadcast(intent, Manifest.permission.SEND_SMS);
 
         }
     }
